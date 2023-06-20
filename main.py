@@ -5,7 +5,7 @@ Rate = 500
 Speed = 1
 Score = 0
 Color = ""
-BloonsType = ["Assets/red.png", "Assets/red.png", "Assets/red.png", "Assets/red.png", "Assets/red.png", "Assets/red.png", "Assets/blue.png", "Assets/blue.png", "Assets/blue.png", "Assets/green.png", "Assets/green.png", "Assets/yellow.png"]
+BloonsType = ["Assets/red.png", "Assets/red.png", "Assets/red.png", "Assets/red.png", "Assets/red.png", "Assets/red.png", "Assets/blue.png", "Assets/blue.png", "Assets/blue.png", "Assets/green.png", "Assets/green.png", "Assets/yellow.png", "Assets/lightning.png", "Assets/lightning.png", "Assets/lightning.png"]
 DISPLAY = pygame.display.set_mode((800, 600))
 Player = pygame.image.load("Assets/hk2GhR.png")
 icon = pygame.image.load("Assets/icon.png")
@@ -13,7 +13,11 @@ pygame.display.set_icon(Player)
 Caught = 10
 class Enemies(pygame.sprite.Sprite):
     def __init__(self):
-        self.sprite = random.randint(0, 11)
+        global Score
+        if Score > 25:
+            self.sprite = random.randint(0, 14)
+        else:
+            self.sprite = random.randint(0, 11)
         super().__init__()
         global BloonsType
         self.image = pygame.image.load(BloonsType[self.sprite])
@@ -22,21 +26,30 @@ class Enemies(pygame.sprite.Sprite):
         if self.rect.colliderect(Player_rect):
             global Color
             global Score
+            global Enemy_group
+            global Caught
+            global Score 
             if self.sprite in range(6):
+                Caught += 1
                 Score += 1
                 Color = "Assets/red.png"
             if self.sprite in range(6, 9):
+                Caught += 1
                 Score += 3
                 Color = "Assets/blue.png"
             if self.sprite in range(9, 11):
+                Caught += 1
                 Score += 5
                 Color = "Assets/green.png"
             if self.sprite == 11:
+                Caught += 1
                 Score += 10
                 Color = "Assets/yellow.png"
+            if self.sprite in range(12, 15):
+                Caught -= 1
+                Group.remove(Group.sprites()[0])
+                Score -= 10
             self.kill()
-            global Caught
-            Caught += 1
     def update(self):
         global Speed
         self.rect.x += Speed
@@ -82,15 +95,24 @@ played = False
 animation = 0
 up = True
 down = False
+Done = 0
 while True:
-    if Score > 50 and Score < 100:
+    if Score > 50 and Score < 100 and Done == 0:
         Speed = 7
-    elif Score > 100 and Score < 150:
+        pygame.time.set_timer(Timer, 400)
+        Done += 1
+    elif Score > 100 and Score < 150 and Done == 1:
         Speed = 13
-    elif Score > 150 and Score < 200:
+        pygame.time.set_timer(Timer, 300)
+        Done += 1
+    elif Score > 150 and Score < 200 and Done == 2:
         Speed = 19
-    elif Score > 200 and Score < 250:
+        pygame.time.set_timer(Timer, 250)
+        Done += 1
+    elif Score > 200 and Score < 250 and Done == 3:
         Speed = 24
+        pygame.time.set_timer(Timer, 200)
+        Done += 1
     if game:
         if Caught != len(Group.sprites()):
             if Caught < len(Group.sprites()):
@@ -144,6 +166,7 @@ while True:
             Main_menu_rect.y += 1
         key_pressed = pygame.key.get_pressed()
         if key_pressed[pygame.K_1]:
+            Done = 0
             Rate = 500
             Speed = 5
             Color = "Assets/red.png"
