@@ -85,11 +85,11 @@ down = False
 while True:
     if Score > 50 and Score < 100:
         Speed = 7
-    elif Score == 100 and Score < 150:
+    elif Score > 100 and Score < 150:
         Speed = 13
-    elif Score == 150 and Score < 200:
+    elif Score > 150 and Score < 200:
         Speed = 19
-    elif Score == 200 and Score < 250:
+    elif Score > 200 and Score < 250:
         Speed = 24
     if game:
         if Caught != len(Group.sprites()):
