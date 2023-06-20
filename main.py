@@ -6,6 +6,7 @@ Speed = 1
 Score = 0
 Color = ""
 end = 0
+Blop_SFX = pygame.mixer.Sound("Assets/Blop.mp3")
 BloonsType = ["Assets/red.png", "Assets/red.png", "Assets/red.png", "Assets/red.png", "Assets/red.png", "Assets/red.png", "Assets/blue.png", "Assets/blue.png", "Assets/blue.png", "Assets/green.png", "Assets/green.png", "Assets/yellow.png", "Assets/lightning.png", "Assets/lightning.png", "Assets/lightning.png", "Assets/lightning.png"]
 DISPLAY = pygame.display.set_mode((800, 600))
 Player = pygame.image.load("Assets/hk2GhR.png")
@@ -29,6 +30,7 @@ class Enemies(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=(10, y))
     def collision(self):
         if self.rect.colliderect(Player_rect):
+            Blop_SFX.play()
             global Color
             global Score
             global Enemy_group
